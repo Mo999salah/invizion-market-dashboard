@@ -3,7 +3,6 @@
 A small cryptocurrency dashboard built for the Invizion frontend. It uses
 live market data from CoinGecko and includes a client-side demo login.
 
-[View the repository on GitHub](https://github.com/Mo999salah/invizion-market-dashboard)
 
 ## Features
 
