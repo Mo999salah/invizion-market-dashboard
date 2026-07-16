@@ -84,13 +84,13 @@ export function MarketDashboard() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-ink font-sans text-fg">
+    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
       <AppTopBar>
         <LogoutButton />
       </AppTopBar>
 
-      <div className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-line bg-panel/30">
+      <div className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-line bg-surface">
           <MarketToolbar
             searchQuery={searchQuery}
             visibleAssetCount={filteredAssets.length}
@@ -102,14 +102,14 @@ export function MarketDashboard() {
 
           {isError ? (
             <div
-              className="border-b border-line bg-accent/5 px-5 py-3 text-sm sm:px-6"
+              className="border-b border-line bg-raised px-5 py-3 text-sm sm:px-6"
               role="alert"
             >
               <p>
-                <span className="font-medium text-accent">
+                <span className="font-semibold text-signal">
                   Market refresh failed.
                 </span>{" "}
-                <span className="text-muted">
+                <span className="text-muted-ui">
                   Showing the last successful market data.
                 </span>
               </p>
@@ -132,7 +132,7 @@ export function MarketDashboard() {
             </section>
 
             {selectedAsset ? (
-              <div className="hidden border-l border-line bg-panel/20 lg:block lg:basis-[38%]">
+              <div className="hidden border-l border-line bg-raised lg:block lg:basis-[38%]">
                 <AssetDetailsPanel asset={selectedAsset} />
               </div>
             ) : null}

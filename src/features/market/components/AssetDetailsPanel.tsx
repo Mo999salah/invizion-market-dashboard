@@ -22,7 +22,7 @@ type DetailRowProps = Readonly<{
 function DetailRow({ label, children, isFinancial = false }: DetailRowProps) {
   return (
     <div className="flex min-w-0 items-baseline justify-between gap-4 py-3">
-      <dt className="shrink-0 text-sm text-muted">{label}</dt>
+      <dt className="shrink-0 text-sm text-muted-ui">{label}</dt>
       <dd
         className={`min-w-0 break-words text-right text-[0.9375rem] text-fg ${
           isFinancial ? "font-mono tabular-nums" : ""
@@ -38,9 +38,9 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
   return (
     <aside
       aria-labelledby="asset-details-title"
-      className="flex h-full flex-col px-6 py-6 lg:sticky lg:top-0"
+      className="flex h-full flex-col px-6 py-7 lg:sticky lg:top-0"
     >
-      <p className="text-xs font-medium uppercase tracking-widest text-faint">
+      <p className="text-sm font-medium text-muted-ui">
         Selected asset
       </p>
       <div
@@ -51,7 +51,7 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
         <AssetLogo src={asset.image} symbol={asset.symbol} size="lg" />
         <h2
           id="asset-details-title"
-          className="flex min-w-0 flex-wrap items-baseline gap-x-3 break-words text-xl font-semibold tracking-tight"
+          className="flex min-w-0 flex-wrap items-baseline gap-x-3 break-words text-xl font-bold tracking-[-0.025em]"
         >
           {asset.name}
           <span className="font-mono text-sm font-normal text-faint">
@@ -60,14 +60,14 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
         </h2>
       </div>
 
-      <div className="mt-5 border-b border-line/60 pb-5">
-        <p className="text-sm text-muted">Current price</p>
-        <p className="mt-1.5 break-words font-mono text-3xl font-medium text-fg tabular-nums">
+      <div className="mt-6 border-b border-line pb-6">
+        <p className="text-sm text-muted-ui">Current price</p>
+        <p className="mt-2 break-words font-mono text-3xl font-medium text-fg tabular-nums">
           {formatUsdPrice(asset.current_price)}
         </p>
       </div>
 
-      <dl className="mt-1 divide-y divide-line/40">
+      <dl className="mt-1 divide-y divide-line-soft">
         <DetailRow label="24h high" isFinancial>
           {formatUsdPrice(asset.high_24h)}
         </DetailRow>

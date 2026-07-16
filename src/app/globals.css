@@ -1,41 +1,71 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0b0d;
-  --foreground: #e6e8ea;
+  --color-paper: oklch(13.5% 0.008 75);
+  --color-paper-2: oklch(17.5% 0.009 75);
+  --color-paper-3: oklch(21% 0.01 75);
+  --color-ink: oklch(94% 0.006 75);
+  --color-ink-2: oklch(78% 0.008 75);
+  --color-rule: oklch(28% 0.01 75);
+  --color-rule-2: oklch(23.5% 0.009 75);
+  --color-control: oklch(50% 0.012 75);
+  --color-muted: oklch(72% 0.01 75);
+  --color-neutral: oklch(60% 0.01 75);
+  --color-accent: oklch(78% 0.145 76);
+  --color-accent-hover: oklch(83% 0.155 76);
+  --color-accent-ink: oklch(18% 0.015 75);
+  --color-focus: oklch(82% 0.18 76);
+  --color-success: oklch(72% 0.12 155);
+  --color-error: oklch(68% 0.17 24);
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
   color-scheme: dark;
-}
-
-@theme {
-  --color-ink: #0a0b0d;
-  --color-panel: #111316;
-  --color-line: #20242a;
-  --color-control: #626b78;
-  --color-fg: #e6e8ea;
-  --color-muted: #9aa1a9;
-  --color-faint: #79818c;
-  --color-accent: #dfa02f;
-  --color-gain: #46b581;
-  --color-loss: #e0636e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-canvas: var(--color-paper);
+  --color-surface: var(--color-paper-2);
+  --color-raised: var(--color-paper-3);
+  --color-line: var(--color-rule);
+  --color-line-soft: var(--color-rule-2);
+  --color-control-ui: var(--color-control);
+  --color-fg: var(--color-ink);
+  --color-secondary: var(--color-ink-2);
+  --color-muted-ui: var(--color-muted);
+  --color-faint: var(--color-neutral);
+  --color-signal: var(--color-accent);
+  --color-signal-ink: var(--color-accent-ink);
+  --color-gain: var(--color-success);
+  --color-loss: var(--color-error);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-html {
+html,
+body {
   min-width: 320px;
-  background: var(--background);
+  min-height: 100%;
+  overflow-x: clip;
+  background: var(--color-paper);
 }
 
 body {
-  min-height: 100%;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  color: var(--color-ink);
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 1rem;
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-style: normal;
 }
 
 button,
@@ -43,14 +73,51 @@ input {
   font: inherit;
 }
 
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
 ::selection {
-  background: #443211;
-  color: #f2e3c0;
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+.ui-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: 999px;
+  animation: ui-spin 800ms linear infinite;
+}
+
+.ui-skeleton {
+  border-radius: 0.25rem;
+  background: var(--color-paper-3);
+  animation: ui-skeleton 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.market-row,
+.market-mobile-row {
+  background: var(--color-paper-2);
+}
+
+.market-row[data-selected="true"],
+.market-mobile-row[data-selected="true"] {
+  background: color-mix(in oklch, var(--color-accent) 10%, var(--color-paper-3));
+}
+
+.workspace-scroll {
+  scrollbar-color: var(--color-rule) transparent;
+  scrollbar-width: thin;
 }
 
 .workspace-scroll::-webkit-scrollbar {
@@ -63,12 +130,35 @@ input {
 }
 
 .workspace-scroll::-webkit-scrollbar-thumb {
-  background: var(--color-line);
-  border-radius: 3px;
+  border-radius: 999px;
+  background: var(--color-rule);
 }
 
-.workspace-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--color-faint);
+@media (hover: hover) and (pointer: fine) {
+  .market-row:not([data-selected="true"]):hover,
+  .market-mobile-row:not([data-selected="true"]):hover {
+    background: var(--color-paper-3);
+  }
+
+  .workspace-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--color-control);
+  }
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ui-skeleton {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -76,8 +166,13 @@ input {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
+    animation-duration: 150ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0ms !important;
+  }
+
+  .ui-spinner {
+    animation-duration: 1.4s !important;
+    animation-iteration-count: infinite !important;
   }
 }

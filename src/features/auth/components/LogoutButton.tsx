@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { Button } from "@/shared/components/ui/Button";
+import { Icon } from "@/shared/components/ui/Icon";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -14,13 +16,14 @@ export function LogoutButton() {
   }
 
   return (
-    <button
+    <Button
       type="button"
       onClick={handleLogout}
       aria-label="Log out of the demo session"
-      className="h-11 shrink-0 rounded-md border border-control bg-transparent px-3.5 text-sm text-muted transition-colors hover:border-faint hover:text-fg"
+      variant="ghost"
+      leadingIcon={<Icon name="logout" size={16} />}
     >
       Log out
-    </button>
+    </Button>
   );
 }

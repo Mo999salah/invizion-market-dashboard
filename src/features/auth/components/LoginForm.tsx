@@ -11,6 +11,9 @@ import {
   type LoginFieldErrors,
 } from "@/features/auth/validation/validateLoginInput";
 import { AppTopBar } from "@/shared/components/ui/AppTopBar";
+import { Button } from "@/shared/components/ui/Button";
+import { Icon } from "@/shared/components/ui/Icon";
+import { TextField } from "@/shared/components/ui/TextField";
 
 export function LoginForm() {
   const router = useRouter();
@@ -89,150 +92,116 @@ export function LoginForm() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-ink font-sans text-fg">
+    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
       <AppTopBar />
 
-      <div className="flex flex-1 items-center justify-center px-5 py-12 sm:px-8">
-        <section
-          aria-labelledby="login-title"
-          className="w-full max-w-md"
-        >
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted">
-            Invizion
-          </p>
+      <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(22rem,0.65fr)] lg:gap-20 lg:py-16">
+        <div className="max-w-xl lg:self-start lg:pt-10">
           <h1
             id="login-title"
-            className="mt-3 text-[1.75rem] font-semibold leading-tight tracking-tight sm:text-[2rem]"
+            className="text-4xl font-bold leading-[1.08] tracking-[-0.04em] text-fg sm:text-5xl"
           >
             Sign in to the Desk
           </h1>
           <p
             id="demo-auth-description"
-            className="mt-3 text-[0.9375rem] leading-relaxed text-muted"
+            className="mt-5 max-w-[54ch] text-base leading-7 text-muted-ui"
           >
-            This assessment uses client-side demo authentication only.
-            It is not production security.
+            Review the top market assets, search symbols, and inspect live price
+            details from one focused workspace.
+          </p>
+          <p className="mt-8 flex items-start gap-3 text-sm leading-6 text-secondary">
+            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 bg-signal" />
+            <span>
+              Demo authentication runs only in this browser. It is not production
+              security.
+            </span>
+          </p>
+        </div>
+
+        <section
+          aria-labelledby="login-title"
+          className="w-full border border-line bg-surface p-5 sm:p-7"
+        >
+          <h2 className="text-lg font-bold tracking-[-0.02em] text-fg">
+            Demo access
+          </h2>
+          <p className="mt-1 text-sm text-muted-ui">
+            Enter the demo credentials or fill them automatically.
           </p>
 
           <form
-            className="mt-10 grid gap-6"
+            className="mt-7 grid gap-4"
             onSubmit={handleSubmit}
             noValidate
             aria-describedby="demo-auth-description"
             aria-busy={isSubmitting}
           >
-            <div>
-              <label
-                className="block text-[0.9375rem] font-medium text-fg"
-                htmlFor="email"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                ref={emailInputRef}
-                name="email"
-                type="email"
-                required
-                value={email}
-                onChange={(event) => handleEmailChange(event.target.value)}
-                autoComplete="email"
-                disabled={isSubmitting}
-                aria-invalid={fieldErrors.email ? true : undefined}
-                aria-describedby={fieldErrors.email ? "email-error" : undefined}
-                className="mt-2 h-12 w-full rounded-md border border-control bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
-                placeholder="you@example.com"
-              />
-              {fieldErrors.email ? (
-                <p
-                  id="email-error"
-                  className="mt-2 text-sm text-loss"
-                  role="alert"
-                >
-                  {fieldErrors.email}
-                </p>
-              ) : null}
-            </div>
+            <TextField
+              id="email"
+              ref={emailInputRef}
+              name="email"
+              type="email"
+              label="Email address"
+              required
+              value={email}
+              onChange={(event) => handleEmailChange(event.target.value)}
+              autoComplete="email"
+              disabled={isSubmitting}
+              error={fieldErrors.email}
+              leadingIcon={<Icon name="mail" size={17} />}
+              placeholder="you@example.com"
+            />
 
-            <div>
-              <label
-                className="block text-[0.9375rem] font-medium text-fg"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                ref={passwordInputRef}
-                name="password"
-                type="password"
-                required
-                value={password}
-                onChange={(event) => handlePasswordChange(event.target.value)}
-                autoComplete="current-password"
-                disabled={isSubmitting}
-                aria-invalid={fieldErrors.password ? true : undefined}
-                aria-describedby={
-                  fieldErrors.password ? "password-error" : undefined
-                }
-                className="mt-2 h-12 w-full rounded-md border border-control bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
-                placeholder="Enter the demo password"
-              />
-              {fieldErrors.password ? (
-                <p
-                  id="password-error"
-                  className="mt-2 text-sm text-loss"
-                  role="alert"
-                >
-                  {fieldErrors.password}
-                </p>
-              ) : null}
-            </div>
+            <TextField
+              id="password"
+              ref={passwordInputRef}
+              name="password"
+              type="password"
+              label="Password"
+              required
+              value={password}
+              onChange={(event) => handlePasswordChange(event.target.value)}
+              autoComplete="current-password"
+              disabled={isSubmitting}
+              error={fieldErrors.password}
+              leadingIcon={<Icon name="lock" size={17} />}
+              placeholder="Demo password"
+            />
 
             {credentialError ? (
               <p
                 id="credential-error"
                 ref={credentialErrorRef}
                 tabIndex={-1}
-                className="rounded-md border border-loss/50 bg-loss/10 px-4 py-3 text-sm text-loss"
+                className="flex items-start gap-2 border border-loss bg-canvas px-3 py-3 text-sm leading-5 text-loss"
                 role="alert"
               >
-                {credentialError}
+                <Icon name="alert" size={17} className="mt-0.5 shrink-0" />
+                <span>{credentialError}</span>
               </p>
             ) : null}
 
-            <button
+            <Button
               type="submit"
-              disabled={isSubmitting}
-              className="h-12 rounded-md bg-fg px-6 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-fg/90 disabled:cursor-not-allowed disabled:opacity-60"
+              variant="primary"
+              size="lg"
+              isLoading={isSubmitting}
+              className="w-full"
             >
               {isSubmitting ? "Signing in…" : "Sign in"}
-            </button>
+            </Button>
           </form>
 
-          <div className="mt-8 rounded-md border border-line/60 bg-panel/50 px-4 py-3 text-sm">
-            <dl>
-              <div className="flex items-baseline justify-between gap-4 py-1">
-                <dt className="shrink-0 text-faint">Demo email</dt>
-                <dd className="break-all text-right font-mono text-[0.8125rem] text-muted">
-                  {DEMO_CREDENTIALS.email}
-                </dd>
-              </div>
-              <div className="flex items-baseline justify-between gap-4 py-1">
-                <dt className="shrink-0 text-faint">Demo password</dt>
-                <dd className="text-right font-mono text-[0.8125rem] text-muted">
-                  {DEMO_CREDENTIALS.password}
-                </dd>
-              </div>
-            </dl>
-            <button
+          <div className="mt-7 border-t border-line pt-5">
+            <Button
               type="button"
               onClick={handleUseDemoAccount}
               disabled={isSubmitting}
-              className="mt-3 h-11 w-full rounded-md border border-accent/60 bg-accent/5 px-4 text-sm font-medium text-accent transition-colors duration-300 ease-out hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full"
             >
               Use demo account
-            </button>
+            </Button>
           </div>
         </section>
       </div>

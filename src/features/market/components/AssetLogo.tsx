@@ -41,7 +41,7 @@ export function AssetLogo({ src, symbol, size = "sm" }: AssetLogoProps) {
   return (
     <span
       aria-hidden="true"
-      className={`${sizeStyles.wrapper} relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-ink ring-1 ring-line/80`}
+      className={`${sizeStyles.wrapper} relative grid shrink-0 place-items-center overflow-hidden rounded-full bg-canvas ring-1 ring-line`}
     >
       {shouldShowImage ? (
         <Image
@@ -55,7 +55,7 @@ export function AssetLogo({ src, symbol, size = "sm" }: AssetLogoProps) {
         />
       ) : (
         <span
-          className={`font-mono font-semibold tracking-tight text-muted ${sizeStyles.fallback}`}
+          className={`font-mono font-semibold tracking-tight text-muted-ui ${sizeStyles.fallback}`}
         >
           {fallbackLabel || "—"}
         </span>

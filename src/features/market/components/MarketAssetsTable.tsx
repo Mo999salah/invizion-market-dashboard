@@ -20,7 +20,7 @@ type MarketAssetsTableProps = Readonly<{
 
 function getChangeColor(value: number | null): string {
   if (value === null || value === 0) {
-    return "text-muted";
+    return "text-muted-ui";
   }
 
   return value > 0 ? "text-gain" : "text-loss";
@@ -40,11 +40,11 @@ function getChangeDirectionLabel(value: number | null): string {
 
 function MobileAssetDetail({ asset }: { asset: MarketAsset }) {
   return (
-    <div className="border-t border-line/40 bg-panel/60 px-5 py-4">
+    <div className="border-t border-line-soft bg-raised px-5 py-5">
       <p className="font-mono text-xl font-medium text-fg tabular-nums">
         {formatUsdPrice(asset.current_price)}
       </p>
-      <p className="mt-0.5 text-xs text-muted">Current price</p>
+      <p className="mt-0.5 text-xs text-muted-ui">Current price</p>
 
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
         <div>
@@ -98,8 +98,8 @@ export function MarketAssetsTable({
         aria-atomic="true"
       >
         <div>
-          <h2 className="text-base font-medium text-fg">No matching assets</h2>
-          <p className="mt-1.5 text-sm text-muted">
+          <h2 className="text-base font-bold text-fg">No matching assets</h2>
+          <p className="mt-1.5 text-sm text-muted-ui">
             Try a different asset name or symbol.
           </p>
         </div>
@@ -117,7 +117,7 @@ export function MarketAssetsTable({
   return (
     <>
       <div
-        className="hidden overflow-x-auto lg:block workspace-scroll focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+        className="workspace-scroll hidden overflow-x-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-signal lg:block"
         role="region"
         aria-label="Scrollable market assets table"
         tabIndex={0}
@@ -130,7 +130,7 @@ export function MarketAssetsTable({
             Top cryptocurrencies ordered by market capitalization. Use each asset
             name button to show its details.
           </caption>
-          <thead className="border-b border-line text-xs text-faint">
+          <thead className="border-b border-line bg-raised text-xs text-faint">
             <tr>
               <th className="px-5 py-3 font-medium sm:px-6" scope="col">
                 Asset
@@ -149,18 +149,15 @@ export function MarketAssetsTable({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-line/40">
+          <tbody className="divide-y divide-line-soft">
             {assets.map((asset) => {
               const isSelected = asset.id === selectedAssetId;
 
               return (
                 <tr
                   key={asset.id}
-                  className={
-                    isSelected
-                      ? "relative bg-accent/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-accent"
-                      : "relative transition-colors hover:bg-panel/60 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-accent"
-                  }
+                  data-selected={isSelected}
+                  className="market-row relative focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-signal"
                 >
                   <th className="p-0" scope="row">
                     <button
@@ -193,7 +190,7 @@ export function MarketAssetsTable({
                     </span>
                     {formatPercentage(asset.price_change_percentage_24h)}
                   </td>
-                  <td className="px-4 py-3.5 text-right font-mono text-sm text-muted tabular-nums sm:pr-6">
+                  <td className="px-4 py-3.5 text-right font-mono text-sm text-muted-ui tabular-nums sm:pr-6">
                     {formatUsdVolume(asset.total_volume)}
                   </td>
                 </tr>
@@ -214,11 +211,8 @@ export function MarketAssetsTable({
                 onClick={() => handleRowClick(asset.id)}
                 aria-expanded={isExpanded}
                 aria-label={`${asset.name}, ${formatUsdPrice(asset.current_price)}${isExpanded ? ", collapse details" : ", expand details"}`}
-                className={`flex w-full items-center justify-between gap-3 border-b border-line/40 px-5 py-3.5 text-left transition-colors ${
-                  isExpanded
-                    ? "bg-accent/10"
-                    : "hover:bg-panel/40"
-                }`}
+                data-selected={isExpanded}
+                className="market-mobile-row flex min-h-16 w-full items-center justify-between gap-3 border-b border-line-soft px-5 py-3.5 text-left"
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <AssetLogo
