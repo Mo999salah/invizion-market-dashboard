@@ -12,6 +12,7 @@ import {
 } from "@/features/market/components/MarketStates";
 import { MarketToolbar } from "@/features/market/components/MarketToolbar";
 import { useMarketAssets } from "@/features/market/hooks/useMarketAssets";
+import { AppTopBar } from "@/shared/components/ui/AppTopBar";
 
 export function MarketDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -111,66 +112,65 @@ export function MarketDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-4 py-8 font-sans text-zinc-100 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <header className="mb-6 flex flex-col gap-4 border-b border-zinc-800 pb-6 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <p className="text-sm font-medium uppercase tracking-widest text-cyan-400">
-                Invizion markets
+    <main className="flex min-h-screen flex-col bg-ink font-sans text-fg">
+      <AppTopBar>
+        <LogoutButton />
+      </AppTopBar>
+
+      {/* ── Bounded workspace container ── */}
+      <div className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
+        {/* ── Workspace card ── */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-line bg-panel/30">
+          {/* ── Command bar ── */}
+          <MarketToolbar
+            searchQuery={searchQuery}
+            visibleAssetCount={filteredAssets.length}
+            totalAssetCount={assets.length}
+            isRefreshing={isRefreshing}
+            onSearchChange={setSearchQuery}
+            onRefresh={refreshMarket}
+          />
+
+          {/* ── Stale data alert ── */}
+          {isError ? (
+            <div
+              className="border-b border-line bg-accent/5 px-5 py-3 text-sm sm:px-6"
+              role="alert"
+            >
+              <p className="border-l-2 border-accent pl-3">
+                <span className="font-medium text-accent">
+                  Market refresh failed.
+                </span>{" "}
+                <span className="text-muted">
+                  Showing the last successful market data.
+                </span>
               </p>
-              <span className="rounded-full border border-zinc-700 bg-zinc-900 px-2.5 py-1 font-mono text-[0.6875rem] uppercase tracking-wide text-zinc-300">
-                Top 20 · USD
-              </span>
+              <span className="sr-only"> {error.message}</span>
             </div>
-            <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">
-              Market dashboard
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-zinc-400">
-              Track the top 20 cryptocurrencies by market capitalization in
-              USD.
-            </p>
-          </div>
-          <div className="sm:pt-1">
-            <LogoutButton />
-          </div>
-        </header>
+          ) : null}
 
-        {isError ? (
-          <div
-            className="mb-4 rounded-md border border-amber-800 bg-amber-950/50 px-4 py-3 text-sm text-amber-200"
-            role="alert"
-          >
-            <p className="font-medium">Market refresh failed</p>
-            <p className="mt-1 text-amber-100">
-              Showing the last successful market data.
-            </p>
-            <span className="sr-only"> {error.message}</span>
+          {/* ── Content area: table + inspector ── */}
+          <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+            {/* ── Table pane (≈62%) ── */}
+            <section
+              aria-label="Market watch"
+              aria-busy={isRefreshing}
+              className="min-h-0 min-w-0 flex-1 overflow-y-auto workspace-scroll lg:basis-[62%]"
+            >
+              <MarketAssetsTable
+                assets={filteredAssets}
+                selectedAssetId={selectedAsset?.id ?? null}
+                onSelectAsset={setSelectedAssetId}
+              />
+            </section>
+
+            {/* ── Inspector pane (≈38%) — hidden on mobile (accordion in table) ── */}
+            {selectedAsset ? (
+              <div className="hidden border-l border-line bg-panel/20 lg:block lg:basis-[38%]">
+                <AssetDetailsPanel asset={selectedAsset} />
+              </div>
+            ) : null}
           </div>
-        ) : null}
-
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:items-start">
-          <section
-            aria-label="Market watch"
-            aria-busy={isRefreshing}
-            className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900/40"
-          >
-            <MarketToolbar
-              searchQuery={searchQuery}
-              visibleAssetCount={filteredAssets.length}
-              totalAssetCount={assets.length}
-              isRefreshing={isRefreshing}
-              onSearchChange={setSearchQuery}
-              onRefresh={refreshMarket}
-            />
-            <MarketAssetsTable
-              assets={filteredAssets}
-              selectedAssetId={selectedAsset?.id ?? null}
-              onSelectAsset={setSelectedAssetId}
-            />
-          </section>
-
-          {selectedAsset ? <AssetDetailsPanel asset={selectedAsset} /> : null}
         </div>
       </div>
     </main>

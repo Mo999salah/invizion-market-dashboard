@@ -1,9 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
+  --background: #0a0b0d;
+  --foreground: #e6e8ea;
   color-scheme: dark;
+}
+
+/*
+ * "The Desk" palette: a near-black ink field, hairline rules, quiet grays,
+ * and one amber accent reserved for state (selection, activity, focus).
+ */
+@theme {
+  --color-ink: #0a0b0d;
+  --color-panel: #111316;
+  --color-line: #20242a;
+  --color-fg: #e6e8ea;
+  --color-muted: #9aa1a9;
+  --color-faint: #79818c;
+  --color-accent: #dfa02f;
+  --color-gain: #46b581;
+  --color-loss: #e0636e;
 }
 
 @theme inline {
@@ -31,13 +47,32 @@ input {
 }
 
 ::selection {
-  background: #155e75;
-  color: #ecfeff;
+  background: #443211;
+  color: #f2e3c0;
 }
 
 :focus-visible {
-  outline: 2px solid #22d3ee;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+}
+
+/* ── Scrollbar styling for the workspace ── */
+.workspace-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.workspace-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.workspace-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 3px;
+}
+
+.workspace-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-faint);
 }
 
 @media (prefers-reduced-motion: reduce) {

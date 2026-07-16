@@ -18,7 +18,7 @@ export function LogoutButton() {
       type="button"
       onClick={handleLogout}
       aria-label="Log out of the demo session"
-      className="h-10 shrink-0 rounded-md border border-zinc-700 bg-zinc-900 px-4 text-sm font-medium text-zinc-200 transition-colors hover:border-zinc-600 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+      className="h-9 shrink-0 rounded-md border border-line bg-transparent px-3.5 text-sm text-muted transition-colors hover:border-faint hover:text-fg"
     >
       Log out
     </button>

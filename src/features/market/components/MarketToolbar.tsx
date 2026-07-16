@@ -7,6 +7,10 @@ type MarketToolbarProps = Readonly<{
   onRefresh: () => void;
 }>;
 
+/**
+ * Unified command bar: title + metadata on the left,
+ * search + count + refresh on the right — all in one row.
+ */
 export function MarketToolbar({
   searchQuery,
   visibleAssetCount,
@@ -16,61 +20,87 @@ export function MarketToolbar({
   onRefresh,
 }: MarketToolbarProps) {
   return (
-    <section
+    <div
       aria-label="Market controls"
-      className="flex flex-col gap-4 border-b border-zinc-800 p-4 sm:flex-row sm:items-end sm:justify-between"
+      className="border-b border-line px-5 py-4 sm:px-6"
     >
-      <label className="grid w-full max-w-md gap-2" htmlFor="market-search">
-        <span className="text-sm font-medium text-zinc-300">Search assets</span>
-        <input
-          id="market-search"
-          type="search"
-          aria-controls="market-assets-table"
-          aria-describedby="market-search-summary"
-          value={searchQuery}
-          onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search by name or symbol"
-          autoComplete="off"
-          className="h-10 rounded-md border border-zinc-700 bg-zinc-950 px-3 text-sm text-zinc-100 outline-none placeholder:text-zinc-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
-        />
-      </label>
+      {/* ── Row 1: Title left, Controls right ── */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Left: Title + meta */}
+        <div className="min-w-0">
+          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
+            Market Dashboard
+          </h1>
+          <p className="mt-1 flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
+            <span>Top 20 by market capitalization</span>
+            <span aria-hidden="true" className="text-line">·</span>
+            <span>USD</span>
+            <span aria-hidden="true" className="text-line">·</span>
+            <span className="font-mono text-xs text-faint">CoinGecko</span>
+          </p>
+        </div>
 
-      <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-        <p
-          id="market-search-summary"
-          className="text-sm text-zinc-300"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          Showing {visibleAssetCount} of {totalAssetCount}
-        </p>
+        {/* Right: Search + count + refresh */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <label className="relative w-full sm:w-64" htmlFor="market-search">
+            <span className="sr-only">Search assets</span>
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-faint" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="7" cy="7" r="4.5" />
+                <path d="m10.5 10.5 3 3" />
+              </svg>
+            </span>
+            <input
+              id="market-search"
+              type="search"
+              aria-controls="market-assets-table"
+              aria-describedby="market-search-summary"
+              value={searchQuery}
+              onChange={(event) => onSearchChange(event.target.value)}
+              placeholder="Search by name or symbol"
+              autoComplete="off"
+              className="h-10 w-full rounded-md border border-line bg-panel pl-9 pr-3 text-sm text-fg outline-none placeholder:text-faint focus:border-accent/70"
+            />
+          </label>
 
-        <span
-          className="inline-flex min-w-24 items-center gap-2 text-xs text-cyan-300"
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          {isRefreshing ? (
-            <>
-              <span
-                aria-hidden="true"
-                className="size-2 animate-pulse rounded-full bg-cyan-400"
-              />
-              Refreshing
-            </>
-          ) : null}
-        </span>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <span
+              className="inline-flex items-center gap-2 text-xs text-accent"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {isRefreshing ? (
+                <>
+                  <span
+                    aria-hidden="true"
+                    className="size-1.5 animate-pulse rounded-full bg-accent"
+                  />
+                  Refreshing
+                </>
+              ) : null}
+            </span>
 
-        <button
-          type="button"
-          onClick={onRefresh}
-          disabled={isRefreshing}
-          className="h-10 rounded-md border border-cyan-700 bg-cyan-950 px-4 text-sm font-semibold text-cyan-100 transition-colors hover:bg-cyan-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {isRefreshing ? "Refreshing…" : "Refresh market"}
-        </button>
+            <p
+              id="market-search-summary"
+              className="whitespace-nowrap font-mono text-xs text-muted tabular-nums"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {visibleAssetCount} of {totalAssetCount}
+            </p>
+
+            <button
+              type="button"
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className="h-10 shrink-0 rounded-md border border-line bg-panel px-4 text-sm font-medium text-fg transition-colors hover:border-faint disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isRefreshing ? "Refreshing…" : "Refresh"}
+            </button>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
