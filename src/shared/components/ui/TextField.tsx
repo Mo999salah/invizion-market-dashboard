@@ -57,7 +57,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             ref={ref}
             aria-invalid={error ? true : props["aria-invalid"]}
             aria-describedby={describedBy || undefined}
-            className={`h-12 w-full rounded-lg border bg-surface px-4 text-[0.9375rem] text-fg outline-2 outline-transparent outline-offset-1 transition-colors duration-150 placeholder:text-muted-ui hover:bg-raised focus-visible:border-control-ui focus-visible:outline-signal disabled:pointer-events-none disabled:opacity-55 ${leadingIcon ? "pl-11" : ""} ${error ? "border-loss pr-11" : "border-control-ui"} ${className}`}
+            className={`h-12 w-full rounded-[0.2rem] border bg-canvas px-4 text-[0.9375rem] text-fg outline-2 outline-transparent outline-offset-1 transition-colors duration-150 placeholder:text-faint hover:bg-raised focus-visible:border-control-ui focus-visible:outline-signal disabled:pointer-events-none disabled:opacity-55 ${leadingIcon ? "pl-11" : ""} ${error ? "border-loss pr-11" : "border-control-ui"} ${className}`}
           />
           {error ? (
             <span className="pointer-events-none absolute right-3 z-10 grid place-items-center text-loss">

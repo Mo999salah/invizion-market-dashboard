@@ -15,10 +15,10 @@ type MarketEmptyStateProps = Readonly<{
 
 function StateContainer({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
+    <main className="trading-shell flex min-h-dvh flex-col font-sans text-fg lg:h-dvh lg:overflow-hidden">
       <AppTopBar />
       <div className="mx-auto flex w-full max-w-screen-xl flex-1 items-center px-5 py-12 sm:px-8">
-        <section className="w-full max-w-lg border-y border-line py-10">
+        <section className="terminal-frame w-full max-w-lg border border-line bg-surface p-8">
           {children}
         </section>
       </div>
@@ -28,16 +28,16 @@ function StateContainer({ children }: Readonly<{ children: React.ReactNode }>) {
 
 export function MarketLoadingState() {
   return (
-    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
+    <main className="trading-shell flex min-h-dvh flex-col font-sans text-fg lg:h-dvh lg:overflow-hidden">
       <AppTopBar />
       <div
-        className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-7"
+        className="mx-auto flex min-h-0 w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-7"
         role="status"
         aria-live="polite"
         aria-atomic="true"
       >
         <span className="sr-only">Loading market data from CoinGecko.</span>
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-line bg-surface">
+        <div className="terminal-frame flex min-h-0 flex-1 flex-col overflow-hidden border border-line bg-surface">
           <div className="flex flex-col gap-5 border-b border-line px-5 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
             <div aria-hidden="true" className="grid gap-2.5">
               <span className="ui-skeleton block h-6 w-48" />

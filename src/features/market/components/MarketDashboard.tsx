@@ -11,6 +11,7 @@ import {
   MarketLoadingState,
 } from "@/features/market/components/MarketStates";
 import { MarketToolbar } from "@/features/market/components/MarketToolbar";
+import { MarketPulseStrip } from "@/features/market/components/MarketPulseStrip";
 import { useMarketAssets } from "@/features/market/hooks/useMarketAssets";
 import { AppTopBar } from "@/shared/components/ui/AppTopBar";
 
@@ -84,13 +85,13 @@ export function MarketDashboard() {
   }
 
   return (
-    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
+    <main className="trading-shell flex min-h-dvh flex-col font-sans text-fg lg:h-dvh lg:overflow-hidden">
       <AppTopBar>
         <LogoutButton />
       </AppTopBar>
 
-      <div className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-7">
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-line bg-surface">
+      <div className="mx-auto flex min-h-0 w-full max-w-[96rem] flex-1 flex-col px-3 py-3 sm:px-5 sm:py-5 lg:px-7 lg:py-6">
+        <div className="terminal-frame flex min-h-0 flex-1 flex-col overflow-hidden border border-line bg-surface">
           <MarketToolbar
             searchQuery={searchQuery}
             visibleAssetCount={filteredAssets.length}
@@ -99,6 +100,8 @@ export function MarketDashboard() {
             onSearchChange={setSearchQuery}
             onRefresh={refreshMarket}
           />
+
+          <MarketPulseStrip assets={assets} />
 
           {isError ? (
             <div
@@ -122,7 +125,7 @@ export function MarketDashboard() {
               id="market-watch-results"
               aria-label="Market watch"
               aria-busy={isRefreshing}
-              className="min-h-0 min-w-0 flex-1 overflow-y-auto workspace-scroll lg:basis-[62%]"
+              className="min-h-0 min-w-0 flex-1 overflow-y-auto workspace-scroll lg:basis-[66%]"
             >
               <MarketAssetsTable
                 assets={filteredAssets}
@@ -132,7 +135,7 @@ export function MarketDashboard() {
             </section>
 
             {selectedAsset ? (
-              <div className="hidden border-l border-line bg-raised lg:block lg:basis-[38%]">
+              <div className="hidden border-l border-line bg-raised lg:block lg:basis-[34%]">
                 <AssetDetailsPanel asset={selectedAsset} />
               </div>
             ) : null}

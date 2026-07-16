@@ -40,8 +40,8 @@ function getChangeDirectionLabel(value: number | null): string {
 
 function MobileAssetDetail({ asset }: { asset: MarketAsset }) {
   return (
-    <div className="border-t border-line-soft bg-raised px-5 py-5">
-      <p className="font-mono text-xl font-medium text-fg tabular-nums">
+    <div className="border-b border-line bg-raised px-5 py-5">
+      <p className="font-mono text-2xl font-medium tracking-[-0.04em] text-fg tabular-nums">
         {formatUsdPrice(asset.current_price)}
       </p>
       <p className="mt-0.5 text-xs text-muted-ui">Current price</p>
@@ -130,9 +130,12 @@ export function MarketAssetsTable({
             Top cryptocurrencies ordered by market capitalization. Use each asset
             name button to show its details.
           </caption>
-          <thead className="border-b border-line bg-raised text-xs text-faint">
+          <thead className="sticky top-0 z-10 border-b border-line bg-raised text-xs text-faint">
             <tr>
-              <th className="px-5 py-3 font-medium sm:px-6" scope="col">
+              <th className="w-12 px-3 py-3 text-center font-medium" scope="col">
+                #
+              </th>
+              <th className="px-4 py-3 font-medium" scope="col">
                 Asset
               </th>
               <th className="px-4 py-3 font-medium" scope="col">
@@ -150,7 +153,7 @@ export function MarketAssetsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-line-soft">
-            {assets.map((asset) => {
+            {assets.map((asset, index) => {
               const isSelected = asset.id === selectedAssetId;
 
               return (
@@ -159,13 +162,16 @@ export function MarketAssetsTable({
                   data-selected={isSelected}
                   className="market-row relative focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-signal"
                 >
+                  <td className="px-3 py-3.5 text-center font-mono text-[0.6875rem] text-faint tabular-nums">
+                    {String(index + 1).padStart(2, "0")}
+                  </td>
                   <th className="p-0" scope="row">
                     <button
                       type="button"
                       onClick={() => onSelectAsset(asset.id)}
                       aria-pressed={isSelected}
                       aria-label={`${asset.name}${isSelected ? ", selected" : ", show details"}`}
-                      className="w-full px-5 py-3.5 text-left text-[0.9375rem] font-medium text-fg outline-none after:absolute after:inset-0 after:content-[''] sm:px-6"
+                      className="w-full px-4 py-3.5 text-left text-[0.9375rem] font-semibold text-fg outline-none after:absolute after:inset-0 after:content-['']"
                     >
                       <span className="flex max-w-48 items-center gap-3">
                         <AssetLogo src={asset.image} symbol={asset.symbol} />
@@ -178,7 +184,7 @@ export function MarketAssetsTable({
                   <td className="px-4 py-3.5 font-mono text-xs text-faint">
                     {formatSymbol(asset.symbol)}
                   </td>
-                  <td className="px-4 py-3.5 text-right font-mono text-sm text-fg tabular-nums">
+                  <td className="px-4 py-3.5 text-right font-mono text-sm font-medium text-fg tabular-nums">
                     {formatUsdPrice(asset.current_price)}
                   </td>
                   <td
@@ -201,7 +207,7 @@ export function MarketAssetsTable({
       </div>
 
       <div className="lg:hidden" role="list" aria-label="Market assets">
-        {assets.map((asset) => {
+        {assets.map((asset, index) => {
           const isExpanded = mobileExpandedId === asset.id;
 
           return (
@@ -215,6 +221,9 @@ export function MarketAssetsTable({
                 className="market-mobile-row flex min-h-16 w-full items-center justify-between gap-3 border-b border-line-soft px-5 py-3.5 text-left"
               >
                 <div className="flex min-w-0 items-center gap-3">
+                  <span className="w-5 shrink-0 font-mono text-[0.625rem] text-faint tabular-nums">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                   <AssetLogo
                     src={asset.image}
                     symbol={asset.symbol}

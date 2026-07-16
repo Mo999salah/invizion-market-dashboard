@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --color-paper: oklch(13.5% 0.008 75);
-  --color-paper-2: oklch(17.5% 0.009 75);
-  --color-paper-3: oklch(21% 0.01 75);
-  --color-ink: oklch(94% 0.006 75);
-  --color-ink-2: oklch(78% 0.008 75);
-  --color-rule: oklch(28% 0.01 75);
-  --color-rule-2: oklch(23.5% 0.009 75);
-  --color-control: oklch(50% 0.012 75);
-  --color-muted: oklch(72% 0.01 75);
-  --color-neutral: oklch(60% 0.01 75);
-  --color-accent: oklch(78% 0.145 76);
-  --color-accent-hover: oklch(83% 0.155 76);
-  --color-accent-ink: oklch(18% 0.015 75);
-  --color-focus: oklch(82% 0.18 76);
-  --color-success: oklch(72% 0.12 155);
-  --color-error: oklch(68% 0.17 24);
+  --color-paper: oklch(11.5% 0.009 85);
+  --color-paper-2: oklch(15.5% 0.01 85);
+  --color-paper-3: oklch(19.5% 0.012 85);
+  --color-ink: oklch(95% 0.008 85);
+  --color-ink-2: oklch(79% 0.012 85);
+  --color-rule: oklch(31% 0.015 85);
+  --color-rule-2: oklch(24% 0.012 85);
+  --color-control: oklch(43% 0.018 85);
+  --color-muted: oklch(68% 0.014 85);
+  --color-neutral: oklch(55% 0.012 85);
+  --color-accent: oklch(82% 0.145 78);
+  --color-accent-hover: oklch(87% 0.14 78);
+  --color-accent-ink: oklch(15% 0.02 80);
+  --color-focus: oklch(84% 0.16 78);
+  --color-success: oklch(76% 0.14 154);
+  --color-error: oklch(72% 0.17 27);
   --background: var(--color-paper);
   --foreground: var(--color-ink);
   color-scheme: dark;
@@ -57,6 +57,53 @@ body {
   font-size: 1rem;
   line-height: 1.55;
   text-rendering: optimizeLegibility;
+}
+
+.trading-shell {
+  background:
+    linear-gradient(115deg, transparent 0 72%, color-mix(in oklch, var(--color-accent) 2.2%, transparent) 72% 72.2%, transparent 72.2%),
+    var(--color-paper);
+}
+
+.terminal-frame {
+  position: relative;
+  isolation: isolate;
+}
+
+.terminal-frame::after {
+  position: absolute;
+  z-index: 2;
+  top: -1px;
+  right: -1px;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-top: 1px solid var(--color-paper);
+  background: linear-gradient(
+    135deg,
+    transparent 46%,
+    var(--color-rule) 47% 51%,
+    var(--color-paper) 52%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.display-type {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-stretch: condensed;
+  font-variation-settings: "wght" 680;
+}
+
+.market-tape {
+  scrollbar-width: none;
+}
+
+.market-tape::-webkit-scrollbar {
+  display: none;
+}
+
+.status-beacon {
+  animation: status-beacon 2.4s ease-in-out infinite;
 }
 
 h1,
@@ -107,12 +154,13 @@ button,
 
 .market-row,
 .market-mobile-row {
-  background: var(--color-paper-2);
+  background: transparent;
 }
 
 .market-row[data-selected="true"],
 .market-mobile-row[data-selected="true"] {
-  background: color-mix(in oklch, var(--color-accent) 10%, var(--color-paper-3));
+  background: color-mix(in oklch, var(--color-accent) 7%, var(--color-paper-3));
+  box-shadow: inset 2px 0 0 var(--color-accent);
 }
 
 .workspace-scroll {
@@ -158,6 +206,16 @@ button,
   }
   50% {
     opacity: 0.9;
+  }
+}
+
+@keyframes status-beacon {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
   }
 }
 

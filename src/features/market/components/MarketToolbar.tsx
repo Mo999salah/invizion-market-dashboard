@@ -22,19 +22,20 @@ export function MarketToolbar({
   return (
     <div
       aria-label="Market controls"
-      className="border-b border-line px-5 py-5 sm:px-6"
+      className="border-b border-line px-5 py-5 sm:px-6 lg:py-6"
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold tracking-[-0.03em] text-fg sm:text-2xl">
-            Market Dashboard
+          <p className="mb-2 text-xs text-signal">Desk 01 / Digital assets</p>
+          <h1 className="display-type text-2xl tracking-[-0.045em] text-fg sm:text-[2rem]">
+            Digital Asset Monitor
           </h1>
-          <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-ui">
-            <span>Top 20 by market capitalization</span>
+          <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-sm text-muted-ui">
+            <span>Price discovery for the top 20 assets</span>
             <span aria-hidden="true" className="text-line">·</span>
             <span>USD</span>
             <span aria-hidden="true" className="text-line">·</span>
-            <span className="font-mono text-xs text-secondary">CoinGecko</span>
+            <span>CoinGecko</span>
           </p>
         </div>
 
@@ -62,7 +63,7 @@ export function MarketToolbar({
               aria-live="polite"
               aria-atomic="true"
             >
-              {visibleAssetCount} of {totalAssetCount}
+              {visibleAssetCount}/{totalAssetCount} instruments
             </p>
 
             <Button
@@ -72,7 +73,7 @@ export function MarketToolbar({
               leadingIcon={<Icon name="refresh" size={16} />}
               size="lg"
             >
-              {isRefreshing ? "Refreshing…" : "Refresh"}
+              {isRefreshing ? "Syncing…" : "Sync feed"}
             </Button>
           </div>
         </div>

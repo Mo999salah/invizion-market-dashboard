@@ -9,7 +9,7 @@ export function AuthLoadingScreen({
   message = "Checking your demo session…",
 }: AuthLoadingScreenProps) {
   return (
-    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
+    <main className="trading-shell flex min-h-dvh flex-col font-sans text-fg">
       <AppTopBar />
       <h1 className="sr-only">Invizion Market Dashboard</h1>
       <div

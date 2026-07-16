@@ -92,42 +92,54 @@ export function LoginForm() {
   }
 
   return (
-    <main className="flex min-h-dvh flex-col bg-canvas font-sans text-fg">
+    <main className="trading-shell flex min-h-dvh flex-col font-sans text-fg">
       <AppTopBar />
 
-      <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(22rem,0.65fr)] lg:gap-20 lg:py-16">
-        <div className="max-w-xl lg:self-start lg:pt-10">
+      <div className="mx-auto grid w-full max-w-[88rem] flex-1 items-center gap-12 px-5 py-12 sm:px-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(23rem,0.55fr)] lg:gap-24 lg:py-16">
+        <div className="max-w-3xl lg:self-center">
+          <p className="mb-5 text-sm text-signal">Realtime digital asset intelligence</p>
           <h1
             id="login-title"
-            className="text-4xl font-bold leading-[1.08] tracking-[-0.04em] text-fg sm:text-5xl"
+            className="display-type text-[clamp(3.5rem,8vw,7.5rem)] leading-[0.83] tracking-[-0.075em] text-fg"
           >
-            Sign in to the Desk
+            MARKET
+            <br />
+            <span className="text-secondary">INTELLIGENCE</span>
           </h1>
           <p
             id="demo-auth-description"
-            className="mt-5 max-w-[54ch] text-base leading-7 text-muted-ui"
+            className="mt-8 max-w-[58ch] text-base leading-7 text-muted-ui"
           >
-            Review the top market assets, search symbols, and inspect live price
-            details from one focused workspace.
+            A focused operations desk for reviewing leading assets, monitoring
+            price movement, and inspecting the market without noise.
           </p>
-          <p className="mt-8 flex items-start gap-3 text-sm leading-6 text-secondary">
-            <span aria-hidden="true" className="mt-2.5 size-1.5 shrink-0 bg-signal" />
-            <span>
-              Demo authentication runs only in this browser. It is not production
-              security.
-            </span>
-          </p>
+
+          <dl className="mt-10 grid max-w-2xl grid-cols-3 border-y border-line text-sm">
+            <div className="py-4 pr-3">
+              <dt className="text-xs text-faint">Coverage</dt>
+              <dd className="mt-1 font-mono text-secondary">20 assets</dd>
+            </div>
+            <div className="border-l border-line py-4 pl-4 pr-3">
+              <dt className="text-xs text-faint">Refresh window</dt>
+              <dd className="mt-1 font-mono text-secondary">60 sec</dd>
+            </div>
+            <div className="border-l border-line py-4 pl-4">
+              <dt className="text-xs text-faint">Quote</dt>
+              <dd className="mt-1 font-mono text-secondary">USD</dd>
+            </div>
+          </dl>
         </div>
 
         <section
           aria-labelledby="login-title"
-          className="w-full border border-line bg-surface p-5 sm:p-7"
+          className="terminal-frame w-full border border-line bg-surface p-5 sm:p-8"
         >
-          <h2 className="text-lg font-bold tracking-[-0.02em] text-fg">
-            Demo access
+          <p className="text-xs text-signal">Authorized access</p>
+          <h2 className="display-type mt-2 text-2xl tracking-[-0.04em] text-fg">
+            Open the market desk
           </h2>
-          <p className="mt-1 text-sm text-muted-ui">
-            Enter the demo credentials or fill them automatically.
+          <p className="mt-2 text-sm leading-6 text-muted-ui">
+            This assessment uses a browser-only demo session.
           </p>
 
           <form
@@ -194,15 +206,29 @@ export function LoginForm() {
           </form>
 
           <div className="mt-7 border-t border-line pt-5">
+            <dl className="mb-4 grid gap-1 text-xs">
+              <div className="flex justify-between gap-4">
+                <dt className="text-faint">Demo email</dt>
+                <dd className="font-mono text-secondary">{DEMO_CREDENTIALS.email}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-faint">Password</dt>
+                <dd className="font-mono text-secondary">{DEMO_CREDENTIALS.password}</dd>
+              </div>
+            </dl>
             <Button
               type="button"
               onClick={handleUseDemoAccount}
               disabled={isSubmitting}
               className="w-full"
             >
-              Use demo account
+              Fill demo credentials
             </Button>
           </div>
+
+          <p className="mt-5 text-xs leading-5 text-faint">
+            Demo authentication is local to this browser and is not production security.
+          </p>
         </section>
       </div>
     </main>
