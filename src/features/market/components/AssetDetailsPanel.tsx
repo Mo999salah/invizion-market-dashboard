@@ -40,7 +40,6 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
       aria-labelledby="asset-details-title"
       className="flex h-full flex-col px-6 py-6 lg:sticky lg:top-0"
     >
-      {/* ── Header: label + asset name ── */}
       <p className="text-xs font-medium uppercase tracking-widest text-faint">
         Selected asset
       </p>
@@ -61,7 +60,6 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
         </h2>
       </div>
 
-      {/* ── Hero price ── */}
       <div className="mt-5 border-b border-line/60 pb-5">
         <p className="text-sm text-muted">Current price</p>
         <p className="mt-1.5 break-words font-mono text-3xl font-medium text-fg tabular-nums">
@@ -69,7 +67,6 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
         </p>
       </div>
 
-      {/* ── Detail rows ── */}
       <dl className="mt-1 divide-y divide-line/40">
         <DetailRow label="24h high" isFinancial>
           {formatUsdPrice(asset.high_24h)}

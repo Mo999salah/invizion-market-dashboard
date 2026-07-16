@@ -42,10 +42,12 @@ npm run build
 npm run start
 ```
 
-Run the linter with:
+Run the checks with:
 
 ```bash
 npm run lint
+npm test
+npm run build
 ```
 
 No API key or environment variables are required.

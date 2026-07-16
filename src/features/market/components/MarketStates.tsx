@@ -57,7 +57,7 @@ export function MarketErrorState({
           type="button"
           onClick={onRetry}
           disabled={isRetrying}
-          className="mt-8 h-11 rounded-md bg-fg px-5 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-8 h-11 rounded-md bg-fg px-5 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-fg/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isRetrying ? "Retrying…" : "Retry"}
         </button>
@@ -85,7 +85,7 @@ export function MarketEmptyState({
           type="button"
           onClick={onRefresh}
           disabled={isRefreshing}
-          className="mt-8 h-11 rounded-md border border-line bg-panel px-5 text-[0.9375rem] font-medium text-fg transition-colors hover:border-faint disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-8 h-11 rounded-md border border-control bg-panel px-5 text-[0.9375rem] font-medium text-fg transition-colors hover:border-faint disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isRefreshing ? "Refreshing…" : "Refresh market"}
         </button>

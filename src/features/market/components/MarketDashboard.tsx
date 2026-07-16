@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { AssetDetailsPanel } from "@/features/market/components/AssetDetailsPanel";
@@ -26,52 +26,24 @@ export function MarketDashboard() {
     refetch,
   } = useMarketAssets();
 
-  const assets = useMemo(() => data ?? [], [data]);
-  const assetIds = useMemo(() => assets.map((asset) => asset.id), [assets]);
-  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(
-    assetIds[0] ?? null,
-  );
-  const [previousAssetIds, setPreviousAssetIds] = useState(assetIds);
+  const assets = data ?? [];
+  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
+  const normalizedQuery = searchQuery.trim().toLocaleLowerCase("en-US");
+  const filteredAssets = normalizedQuery
+    ? assets.filter((asset) => {
+        const normalizedName = asset.name.toLocaleLowerCase("en-US");
+        const normalizedSymbol = asset.symbol.toLocaleLowerCase("en-US");
 
-  let validSelectedAssetId = selectedAssetId;
-
-  if (previousAssetIds !== assetIds) {
-    setPreviousAssetIds(assetIds);
-
-    if (
-      validSelectedAssetId === null ||
-      !assetIds.includes(validSelectedAssetId)
-    ) {
-      validSelectedAssetId = assetIds[0] ?? null;
-      setSelectedAssetId(validSelectedAssetId);
-    }
-  }
-
-  const filteredAssets = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLocaleLowerCase("en-US");
-
-    if (normalizedQuery.length === 0) {
-      return assets;
-    }
-
-    return assets.filter((asset) => {
-      const normalizedName = asset.name.toLocaleLowerCase("en-US");
-      const normalizedSymbol = asset.symbol.toLocaleLowerCase("en-US");
-
-      return (
-        normalizedName.includes(normalizedQuery) ||
-        normalizedSymbol.includes(normalizedQuery)
-      );
-    });
-  }, [assets, searchQuery]);
-
-  const selectedAsset = useMemo(
-    () =>
-      assets.find((asset) => asset.id === validSelectedAssetId) ??
-      assets[0] ??
-      null,
-    [assets, validSelectedAssetId],
-  );
+        return (
+          normalizedName.includes(normalizedQuery) ||
+          normalizedSymbol.includes(normalizedQuery)
+        );
+      })
+    : assets;
+  const selectedAsset =
+    filteredAssets.find((asset) => asset.id === selectedAssetId) ??
+    filteredAssets[0] ??
+    null;
 
   const isInitialLoading =
     isPending && assets.length === 0 && !isManualRetrying;
@@ -117,11 +89,8 @@ export function MarketDashboard() {
         <LogoutButton />
       </AppTopBar>
 
-      {/* ── Bounded workspace container ── */}
       <div className="mx-auto flex w-full max-w-screen-xl flex-1 flex-col px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        {/* ── Workspace card ── */}
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-line bg-panel/30">
-          {/* ── Command bar ── */}
           <MarketToolbar
             searchQuery={searchQuery}
             visibleAssetCount={filteredAssets.length}
@@ -131,13 +100,12 @@ export function MarketDashboard() {
             onRefresh={refreshMarket}
           />
 
-          {/* ── Stale data alert ── */}
           {isError ? (
             <div
               className="border-b border-line bg-accent/5 px-5 py-3 text-sm sm:px-6"
               role="alert"
             >
-              <p className="border-l-2 border-accent pl-3">
+              <p>
                 <span className="font-medium text-accent">
                   Market refresh failed.
                 </span>{" "}
@@ -149,10 +117,9 @@ export function MarketDashboard() {
             </div>
           ) : null}
 
-          {/* ── Content area: table + inspector ── */}
           <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
-            {/* ── Table pane (≈62%) ── */}
             <section
+              id="market-watch-results"
               aria-label="Market watch"
               aria-busy={isRefreshing}
               className="min-h-0 min-w-0 flex-1 overflow-y-auto workspace-scroll lg:basis-[62%]"
@@ -164,7 +131,6 @@ export function MarketDashboard() {
               />
             </section>
 
-            {/* ── Inspector pane (≈38%) — hidden on mobile (accordion in table) ── */}
             {selectedAsset ? (
               <div className="hidden border-l border-line bg-panel/20 lg:block lg:basis-[38%]">
                 <AssetDetailsPanel asset={selectedAsset} />

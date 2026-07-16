@@ -7,14 +7,9 @@ export type DemoSession = Readonly<{
   email: string;
 }>;
 
-export type AuthSnapshot = Readonly<{
-  session: DemoSession | null;
+export type AuthContextValue = Readonly<{
+  isAuthenticated: boolean;
   isInitialized: boolean;
+  login: (credentials: DemoCredentials) => boolean;
+  logout: () => void;
 }>;
-
-export type AuthContextValue = AuthSnapshot &
-  Readonly<{
-    isAuthenticated: boolean;
-    login: (credentials: DemoCredentials) => Promise<boolean>;
-    logout: () => void;
-  }>;

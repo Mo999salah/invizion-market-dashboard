@@ -1,59 +1,59 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useSyncExternalStore,
-} from "react";
+import { useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
+import { DEMO_CREDENTIALS } from "@/features/auth/config/demoCredentials";
 import { AuthContext } from "@/features/auth/context/authContext";
 import {
-  authenticateDemoCredentials,
-  endDemoSession,
-  getAuthSnapshot,
-  getServerAuthSnapshot,
-  initializeAuthStore,
-  subscribeToAuthStore,
-} from "@/features/auth/stores/authStore";
-import type {
-  AuthContextValue,
-  DemoCredentials,
-} from "@/features/auth/types/auth";
+  clearDemoSession,
+  getDemoSessionSnapshot,
+  getServerDemoSessionSnapshot,
+  parseDemoSessionSnapshot,
+  persistDemoSession,
+  subscribeToDemoSession,
+} from "@/features/auth/services/demoSessionStorage";
+import type { DemoCredentials } from "@/features/auth/types/auth";
 
 type AuthProviderProps = Readonly<{
   children: ReactNode;
 }>;
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const snapshot = useSyncExternalStore(
-    subscribeToAuthStore,
-    getAuthSnapshot,
-    getServerAuthSnapshot,
+  const sessionSnapshot = useSyncExternalStore(
+    subscribeToDemoSession,
+    getDemoSessionSnapshot,
+    getServerDemoSessionSnapshot,
   );
+  const session = parseDemoSessionSnapshot(sessionSnapshot);
+  const isInitialized = sessionSnapshot !== undefined;
 
-  useEffect(() => {
-    initializeAuthStore();
-  }, []);
+  function login(credentials: DemoCredentials): boolean {
+    const emailMatches =
+      credentials.email.trim().toLocaleLowerCase("en-US") ===
+      DEMO_CREDENTIALS.email;
+    const passwordMatches = credentials.password === DEMO_CREDENTIALS.password;
 
-  const login = useCallback((credentials: DemoCredentials) => {
-    return Promise.resolve(authenticateDemoCredentials(credentials));
-  }, []);
+    if (!emailMatches || !passwordMatches) {
+      return false;
+    }
 
-  const logout = useCallback(() => {
-    endDemoSession();
-  }, []);
+    const nextSession = { email: DEMO_CREDENTIALS.email };
+    persistDemoSession(nextSession);
 
-  const contextValue = useMemo<AuthContextValue>(
-    () => ({
-      ...snapshot,
-      isAuthenticated: snapshot.session !== null,
-      login,
-      logout,
-    }),
-    [login, logout, snapshot],
-  );
+    return true;
+  }
+
+  function logout() {
+    clearDemoSession();
+  }
+
+  const contextValue = {
+    isAuthenticated: session !== null,
+    isInitialized,
+    login,
+    logout,
+  };
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

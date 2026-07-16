@@ -55,7 +55,7 @@ export function LoginForm() {
     setCredentialError(null);
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const credentials = { email, password };
@@ -75,7 +75,7 @@ export function LoginForm() {
     }
 
     setIsSubmitting(true);
-    const isValidLogin = await login(credentials);
+    const isValidLogin = login(credentials);
 
     if (!isValidLogin) {
       setCredentialError(
@@ -92,13 +92,11 @@ export function LoginForm() {
     <main className="flex min-h-screen flex-col bg-ink font-sans text-fg">
       <AppTopBar />
 
-      {/* ── Centered hero login block ── */}
       <div className="flex flex-1 items-center justify-center px-5 py-12 sm:px-8">
         <section
           aria-labelledby="login-title"
           className="w-full max-w-md"
         >
-          {/* Brand + heading */}
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted">
             Invizion
           </p>
@@ -116,7 +114,6 @@ export function LoginForm() {
             It is not production security.
           </p>
 
-          {/* ── Form ── */}
           <form
             className="mt-10 grid gap-6"
             onSubmit={handleSubmit}
@@ -143,7 +140,7 @@ export function LoginForm() {
                 disabled={isSubmitting}
                 aria-invalid={fieldErrors.email ? true : undefined}
                 aria-describedby={fieldErrors.email ? "email-error" : undefined}
-                className="mt-2 h-12 w-full rounded-md border border-line bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent/70 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-2 h-12 w-full rounded-md border border-control bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
                 placeholder="you@example.com"
               />
               {fieldErrors.email ? (
@@ -178,7 +175,7 @@ export function LoginForm() {
                 aria-describedby={
                   fieldErrors.password ? "password-error" : undefined
                 }
-                className="mt-2 h-12 w-full rounded-md border border-line bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent/70 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-2 h-12 w-full rounded-md border border-control bg-panel px-4 text-[0.9375rem] text-fg outline-none placeholder:text-faint focus:border-accent disabled:cursor-not-allowed disabled:opacity-60"
                 placeholder="Enter the demo password"
               />
               {fieldErrors.password ? (
@@ -197,7 +194,7 @@ export function LoginForm() {
                 id="credential-error"
                 ref={credentialErrorRef}
                 tabIndex={-1}
-                className="rounded-md border-l-2 border-loss bg-loss/10 px-4 py-3 text-sm text-loss"
+                className="rounded-md border border-loss/50 bg-loss/10 px-4 py-3 text-sm text-loss"
                 role="alert"
               >
                 {credentialError}
@@ -207,13 +204,12 @@ export function LoginForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 rounded-md bg-fg px-6 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-12 rounded-md bg-fg px-6 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-fg/90 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Signing in…" : "Sign in"}
             </button>
           </form>
 
-          {/* ── Demo credentials footnote ── */}
           <div className="mt-8 rounded-md border border-line/60 bg-panel/50 px-4 py-3 text-sm">
             <dl>
               <div className="flex items-baseline justify-between gap-4 py-1">
@@ -233,7 +229,7 @@ export function LoginForm() {
               type="button"
               onClick={handleUseDemoAccount}
               disabled={isSubmitting}
-              className="mt-3 h-10 w-full rounded-md border border-accent/30 bg-accent/5 px-4 text-sm font-medium text-accent transition-colors duration-300 ease-out hover:border-accent/50 hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-3 h-11 w-full rounded-md border border-accent/60 bg-accent/5 px-4 text-sm font-medium text-accent transition-colors duration-300 ease-out hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Use demo account
             </button>

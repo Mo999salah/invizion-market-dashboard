@@ -38,7 +38,6 @@ function getChangeDirectionLabel(value: number | null): string {
   return value > 0 ? "Increase" : "Decrease";
 }
 
-/* ── Mobile inline detail card ── */
 function MobileAssetDetail({ asset }: { asset: MarketAsset }) {
   return (
     <div className="border-t border-line/40 bg-panel/60 px-5 py-4">
@@ -117,7 +116,6 @@ export function MarketAssetsTable({
 
   return (
     <>
-      {/* ── Desktop table (hidden on mobile) ── */}
       <div
         className="hidden overflow-x-auto lg:block workspace-scroll focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
         role="region"
@@ -160,7 +158,7 @@ export function MarketAssetsTable({
                   key={asset.id}
                   className={
                     isSelected
-                      ? "relative bg-panel shadow-[inset_3px_0_0_0_var(--color-accent)] focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-accent"
+                      ? "relative bg-accent/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-accent"
                       : "relative transition-colors hover:bg-panel/60 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-accent"
                   }
                 >
@@ -193,9 +191,7 @@ export function MarketAssetsTable({
                       {getChangeDirectionLabel(asset.price_change_percentage_24h)}
                       :{" "}
                     </span>
-                    <span aria-hidden="true">
-                      {formatPercentage(asset.price_change_percentage_24h)}
-                    </span>
+                    {formatPercentage(asset.price_change_percentage_24h)}
                   </td>
                   <td className="px-4 py-3.5 text-right font-mono text-sm text-muted tabular-nums sm:pr-6">
                     {formatUsdVolume(asset.total_volume)}
@@ -207,7 +203,6 @@ export function MarketAssetsTable({
         </table>
       </div>
 
-      {/* ── Mobile compact list with inline accordion ── */}
       <div className="lg:hidden" role="list" aria-label="Market assets">
         {assets.map((asset) => {
           const isExpanded = mobileExpandedId === asset.id;
@@ -221,7 +216,7 @@ export function MarketAssetsTable({
                 aria-label={`${asset.name}, ${formatUsdPrice(asset.current_price)}${isExpanded ? ", collapse details" : ", expand details"}`}
                 className={`flex w-full items-center justify-between gap-3 border-b border-line/40 px-5 py-3.5 text-left transition-colors ${
                   isExpanded
-                    ? "bg-panel shadow-[inset_3px_0_0_0_var(--color-accent)]"
+                    ? "bg-accent/10"
                     : "hover:bg-panel/40"
                 }`}
               >

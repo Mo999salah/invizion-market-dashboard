@@ -2,6 +2,9 @@ import { DEMO_CREDENTIALS } from "@/features/auth/config/demoCredentials";
 import type { DemoSession } from "@/features/auth/types/auth";
 
 const DEMO_SESSION_STORAGE_KEY = "invizion.demo-session.v1";
+const DEMO_SESSION_CHANGE_EVENT = "invizion:demo-session-change";
+
+export type DemoSessionSnapshot = string | null | undefined;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -20,18 +23,17 @@ function isDemoSession(value: unknown): value is DemoSession {
  * viewed, changed, or forged by anyone and must not be treated as production
  * authentication or authorization.
  */
-export function readDemoSession(): DemoSession | null {
+export function parseDemoSessionSnapshot(
+  storedValue: DemoSessionSnapshot,
+): DemoSession | null {
+  if (storedValue === null || storedValue === undefined) {
+    return null;
+  }
+
   try {
-    const storedValue = window.localStorage.getItem(DEMO_SESSION_STORAGE_KEY);
-
-    if (storedValue === null) {
-      return null;
-    }
-
     const parsedValue: unknown = JSON.parse(storedValue);
 
     if (!isDemoSession(parsedValue)) {
-      clearDemoSession();
       return null;
     }
 
@@ -42,21 +44,49 @@ export function readDemoSession(): DemoSession | null {
   }
 }
 
+export function getDemoSessionSnapshot(): DemoSessionSnapshot {
+  try {
+    return window.localStorage.getItem(DEMO_SESSION_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function getServerDemoSessionSnapshot(): DemoSessionSnapshot {
+  return undefined;
+}
+
+export function subscribeToDemoSession(listener: () => void): () => void {
+  window.addEventListener("storage", listener);
+  window.addEventListener(DEMO_SESSION_CHANGE_EVENT, listener);
+
+  return () => {
+    window.removeEventListener("storage", listener);
+    window.removeEventListener(DEMO_SESSION_CHANGE_EVENT, listener);
+  };
+}
+
+function notifyDemoSessionChange(): void {
+  window.dispatchEvent(new Event(DEMO_SESSION_CHANGE_EVENT));
+}
+
 export function persistDemoSession(session: DemoSession): void {
   try {
     window.localStorage.setItem(
       DEMO_SESSION_STORAGE_KEY,
       JSON.stringify({ email: session.email }),
     );
+    notifyDemoSessionChange();
   } catch {
-    // The in-memory demo session remains usable if storage is unavailable.
+    return;
   }
 }
 
 export function clearDemoSession(): void {
   try {
     window.localStorage.removeItem(DEMO_SESSION_STORAGE_KEY);
+    notifyDemoSessionChange();
   } catch {
-    // There is no persistent session to clear when storage is unavailable.
+    return;
   }
 }

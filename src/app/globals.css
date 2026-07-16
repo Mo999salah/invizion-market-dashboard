@@ -6,14 +6,11 @@
   color-scheme: dark;
 }
 
-/*
- * "The Desk" palette: a near-black ink field, hairline rules, quiet grays,
- * and one amber accent reserved for state (selection, activity, focus).
- */
 @theme {
   --color-ink: #0a0b0d;
   --color-panel: #111316;
   --color-line: #20242a;
+  --color-control: #626b78;
   --color-fg: #e6e8ea;
   --color-muted: #9aa1a9;
   --color-faint: #79818c;
@@ -56,7 +53,6 @@ input {
   outline-offset: 2px;
 }
 
-/* ── Scrollbar styling for the workspace ── */
 .workspace-scroll::-webkit-scrollbar {
   width: 6px;
   height: 6px;

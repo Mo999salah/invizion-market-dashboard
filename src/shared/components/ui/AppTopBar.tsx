@@ -4,10 +4,6 @@ type AppTopBarProps = Readonly<{
   children?: ReactNode;
 }>;
 
-/**
- * Slim header strip shared by the login and dashboard screens so both
- * belong to the same visual system.
- */
 export function AppTopBar({ children }: AppTopBarProps) {
   return (
     <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-line px-5 sm:px-8">
