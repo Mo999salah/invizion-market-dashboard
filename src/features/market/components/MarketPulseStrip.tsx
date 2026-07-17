@@ -3,19 +3,12 @@ import {
   formatSymbol,
   formatUsdPrice,
 } from "@/features/market/formatters/marketFormatters";
+import { getMarketChangeColorClass } from "@/features/market/presentation/marketChange";
 import type { MarketAsset } from "@/features/market/types/marketAsset";
 
 type MarketPulseStripProps = Readonly<{
   assets: readonly MarketAsset[];
 }>;
-
-function getChangeColor(value: number | null): string {
-  if (value === null || value === 0) {
-    return "text-muted-ui";
-  }
-
-  return value > 0 ? "text-gain" : "text-loss";
-}
 
 export function MarketPulseStrip({ assets }: MarketPulseStripProps) {
   const tapeAssets = assets.slice(0, 5);
@@ -37,7 +30,7 @@ export function MarketPulseStrip({ assets }: MarketPulseStripProps) {
             </span>
             <span className="text-right font-mono text-xs tabular-nums text-fg">
               <span>{formatUsdPrice(asset.current_price)}</span>
-              <span className={`ml-2 ${getChangeColor(asset.price_change_percentage_24h)}`}>
+              <span className={`ml-2 ${getMarketChangeColorClass(asset.price_change_percentage_24h)}`}>
                 {formatPercentage(asset.price_change_percentage_24h)}
               </span>
             </span>

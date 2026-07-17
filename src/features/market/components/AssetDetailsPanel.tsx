@@ -8,6 +8,7 @@ import {
   formatUsdPrice,
   formatUsdVolume,
 } from "@/features/market/formatters/marketFormatters";
+import { getMarketChangeColorClass } from "@/features/market/presentation/marketChange";
 import type { MarketAsset } from "@/features/market/types/marketAsset";
 
 type AssetDetailsPanelProps = Readonly<{
@@ -53,12 +54,7 @@ export function AssetDetailsPanel({ asset }: AssetDetailsPanelProps) {
         ),
       )
     : 50;
-  const changeColor =
-    change === null || change === 0
-      ? "text-muted-ui"
-      : change > 0
-        ? "text-gain"
-        : "text-loss";
+  const changeColor = getMarketChangeColorClass(change);
 
   return (
     <aside

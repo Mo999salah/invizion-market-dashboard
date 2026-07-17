@@ -39,7 +39,6 @@ export function parseDemoSessionSnapshot(
 
     return { email: parsedValue.email };
   } catch {
-    clearDemoSession();
     return null;
   }
 }
@@ -70,15 +69,16 @@ function notifyDemoSessionChange(): void {
   window.dispatchEvent(new Event(DEMO_SESSION_CHANGE_EVENT));
 }
 
-export function persistDemoSession(session: DemoSession): void {
+export function persistDemoSession(session: DemoSession): boolean {
   try {
     window.localStorage.setItem(
       DEMO_SESSION_STORAGE_KEY,
       JSON.stringify({ email: session.email }),
     );
     notifyDemoSessionChange();
+    return true;
   } catch {
-    return;
+    return false;
   }
 }
 

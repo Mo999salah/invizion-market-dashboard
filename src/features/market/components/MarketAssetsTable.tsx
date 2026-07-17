@@ -10,6 +10,10 @@ import {
   formatUsdPrice,
   formatUsdVolume,
 } from "@/features/market/formatters/marketFormatters";
+import {
+  getMarketChangeColorClass,
+  getMarketChangeDirectionLabel,
+} from "@/features/market/presentation/marketChange";
 import type { MarketAsset } from "@/features/market/types/marketAsset";
 
 type MarketAssetsTableProps = Readonly<{
@@ -17,26 +21,6 @@ type MarketAssetsTableProps = Readonly<{
   selectedAssetId: string | null;
   onSelectAsset: (assetId: string) => void;
 }>;
-
-function getChangeColor(value: number | null): string {
-  if (value === null || value === 0) {
-    return "text-muted-ui";
-  }
-
-  return value > 0 ? "text-gain" : "text-loss";
-}
-
-function getChangeDirectionLabel(value: number | null): string {
-  if (value === null) {
-    return "Not available";
-  }
-
-  if (value === 0) {
-    return "No change";
-  }
-
-  return value > 0 ? "Increase" : "Decrease";
-}
 
 function MobileAssetDetail({ asset }: { asset: MarketAsset }) {
   return (
@@ -62,7 +46,7 @@ function MobileAssetDetail({ asset }: { asset: MarketAsset }) {
         <div>
           <dt className="text-xs text-faint">24h change</dt>
           <dd
-            className={`font-mono text-[0.8125rem] tabular-nums ${getChangeColor(asset.price_change_percentage_24h)}`}
+            className={`font-mono text-[0.8125rem] tabular-nums ${getMarketChangeColorClass(asset.price_change_percentage_24h)}`}
           >
             {formatPercentage(asset.price_change_percentage_24h)}
           </dd>
@@ -188,10 +172,10 @@ export function MarketAssetsTable({
                     {formatUsdPrice(asset.current_price)}
                   </td>
                   <td
-                    className={`px-4 py-3.5 text-right font-mono text-sm tabular-nums ${getChangeColor(asset.price_change_percentage_24h)}`}
+                    className={`px-4 py-3.5 text-right font-mono text-sm tabular-nums ${getMarketChangeColorClass(asset.price_change_percentage_24h)}`}
                   >
                     <span className="sr-only">
-                      {getChangeDirectionLabel(asset.price_change_percentage_24h)}
+                      {getMarketChangeDirectionLabel(asset.price_change_percentage_24h)}
                       :{" "}
                     </span>
                     {formatPercentage(asset.price_change_percentage_24h)}
@@ -243,7 +227,7 @@ export function MarketAssetsTable({
                     {formatUsdPrice(asset.current_price)}
                   </p>
                   <p
-                    className={`mt-0.5 font-mono text-xs tabular-nums ${getChangeColor(asset.price_change_percentage_24h)}`}
+                    className={`mt-0.5 font-mono text-xs tabular-nums ${getMarketChangeColorClass(asset.price_change_percentage_24h)}`}
                   >
                     {formatPercentage(asset.price_change_percentage_24h)}
                   </p>

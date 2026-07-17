@@ -7,9 +7,14 @@ export type DemoSession = Readonly<{
   email: string;
 }>;
 
+export type LoginResult =
+  | "success"
+  | "invalid-credentials"
+  | "storage-unavailable";
+
 export type AuthContextValue = Readonly<{
   isAuthenticated: boolean;
   isInitialized: boolean;
-  login: (credentials: DemoCredentials) => boolean;
+  login: (credentials: DemoCredentials) => LoginResult;
   logout: () => void;
 }>;

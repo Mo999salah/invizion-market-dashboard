@@ -78,11 +78,13 @@ export function LoginForm() {
     }
 
     setIsSubmitting(true);
-    const isValidLogin = login(credentials);
+    const loginResult = login(credentials);
 
-    if (!isValidLogin) {
+    if (loginResult !== "success") {
       setCredentialError(
-        "The email or password does not match the demo credentials.",
+        loginResult === "storage-unavailable"
+          ? "This browser could not save the demo session. Enable local storage and try again."
+          : "The email or password does not match the demo credentials.",
       );
       setIsSubmitting(false);
       return;

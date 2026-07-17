@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
 import { DEMO_CREDENTIALS } from "@/features/auth/config/demoCredentials";
@@ -13,7 +13,10 @@ import {
   persistDemoSession,
   subscribeToDemoSession,
 } from "@/features/auth/services/demoSessionStorage";
-import type { DemoCredentials } from "@/features/auth/types/auth";
+import type {
+  DemoCredentials,
+  LoginResult,
+} from "@/features/auth/types/auth";
 
 type AuthProviderProps = Readonly<{
   children: ReactNode;
@@ -27,21 +30,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
   const session = parseDemoSessionSnapshot(sessionSnapshot);
   const isInitialized = sessionSnapshot !== undefined;
+  const hasInvalidStoredSession =
+    sessionSnapshot !== undefined &&
+    sessionSnapshot !== null &&
+    session === null;
 
-  function login(credentials: DemoCredentials): boolean {
+  useEffect(() => {
+    if (hasInvalidStoredSession) {
+      clearDemoSession();
+    }
+  }, [hasInvalidStoredSession]);
+
+  function login(credentials: DemoCredentials): LoginResult {
     const emailMatches =
       credentials.email.trim().toLocaleLowerCase("en-US") ===
       DEMO_CREDENTIALS.email;
     const passwordMatches = credentials.password === DEMO_CREDENTIALS.password;
 
     if (!emailMatches || !passwordMatches) {
-      return false;
+      return "invalid-credentials";
     }
 
     const nextSession = { email: DEMO_CREDENTIALS.email };
-    persistDemoSession(nextSession);
-
-    return true;
+    return persistDemoSession(nextSession) ? "success" : "storage-unavailable";
   }
 
   function logout() {
