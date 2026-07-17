@@ -3,6 +3,9 @@
 A small cryptocurrency dashboard built for the Invizion frontend. It uses
 live market data from CoinGecko and includes a client-side demo login.
 
+## Live demo
+
+[Open the deployed dashboard on Vercel](https://invizion-market-dashboard.vercel.app/)
 
 ## Features
 
@@ -26,7 +29,7 @@ live market data from CoinGecko and includes a client-side demo login.
 
 ## Run locally
 
-You will need Node.js 20.19 or newer and npm.
+You will need Node.js 24 and npm.
 
 ```bash
 npm install
